@@ -1,0 +1,66 @@
+﻿@using MVCFilmSON.Models
+@using PagedList
+@using PagedList.Mvc
+@model IPagedList<Film>
+@{
+    ViewBag.Title = "Yabancı Filmler";
+}
+
+<article class="node">
+    <h1 class="title">Yabancı Filmler</h1>
+    <div class="navigation top alpha omega grid_12">
+        <div class="sort_cont">
+            <div class="form-type-select">
+                <label for="form_titles">Sırala:</label>
+                <select id="form_titles" class="sort_by form_titles">
+                    <option @Html.Raw(ViewBag.s == "Alfabetik A-Z" ? "selected" : "")>Alfabetik A-Z</option>
+                    <option @Html.Raw(ViewBag.s == "Alfabetik Z-A" ? "selected" : "")>Alfabetik Z-A</option>
+                    <option @Html.Raw(ViewBag.s == "Yeniden Eskiye" ? "selected" : "")>Yeniden Eskiye</option>
+                    <option @Html.Raw(ViewBag.s == "Eskiden Yeniye" ? "selected" : "")>Eskiden Yeniye</option>
+                </select>
+            </div>
+            <div class="form-type-select">
+                <label for="form_titles">Yıl:</label>
+                <select id="form_yil" class="sort_by form_titles">
+                    <option>Hepsi</option>
+                    @for (int i = 1970; i <= DateTime.Today.Year; i++)
+                    {
+                        <option @Html.Raw(ViewBag.secilen == i ? "selected" : "")>@i</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="item-list">
+            <ul class="pager">
+                <li class="pager-count">
+                   Sayfa: @Model.PageNumber / Toplam: @Model.PageCount
+                </li>
+
+                    @Html.PagedListPager(Model, gelensayfa => Url.Action("Yabanci",
+    new { gelensayfa, sirala = ViewBag.s, y = ViewBag.secilen }))
+            </ul>
+        </div>
+
+
+
+        <div id="sorted" class="col3 video">
+            @if (Model.Count() == 0)
+            {
+                <div class="photo_colums grid_4" data-id="id-1" data-type="test2">
+                    Film bulunamadı.
+                </div>
+            }
+
+            @foreach (var item in Model)
+            {
+                <div class="photo_colums grid_4" data-id="id-@item.FilmID" data-type="test2">
+                    <a href="/ERP/Detay/@item.FilmID"><img class="wrap_me" alt="Portfolio" src="/Content/filmresim/@item.ResimURL" /></a>
+                    <div class="details">
+                        <h4 class="title"><a href="/ERP/Detay/@item.FilmID">@item.FilmAdi</a></h4>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</article>

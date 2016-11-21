@@ -1,0 +1,31 @@
+﻿@using MVCFilmSON.Models
+@model IEnumerable<Film>
+@{
+    ViewBag.Title = "Arama sonuçları: "+ViewBag.aranankelime;
+}
+
+<article class="node">
+    <h1 class="title">@ViewBag.aranankelime için arama sonuçları</h1>
+    <div class="navigation top alpha omega grid_12">
+
+        <div id="sorted" class="col3 video">
+            @if (Model.Count() == 0)
+            {
+                <div class="photo_colums grid_4" data-id="id-1" data-type="test2">
+                    Film bulunamadı.
+                </div>
+            }
+
+            @foreach (var item in Model)
+            {
+                <div class="photo_colums grid_4" data-id="id-@item.FilmID" data-type="test2">
+                    <a href="/ERP/Detay/@item.FilmID"><img class="wrap_me" alt="Portfolio" src="/Content/filmresim/@item.ResimURL" /></a>
+                    <div class="details">
+                        <h4 class="title"><a href="/ERP/Detay/@item.FilmID">@item.FilmAdi</a></h4>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+</article>

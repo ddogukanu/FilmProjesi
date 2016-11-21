@@ -1,0 +1,74 @@
+﻿@model MVCFilmSON.Models.Film
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Film</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.FilminKategorisi.KategoriAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FilminKategorisi.KategoriAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FilmAdi)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FilmAdi)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Yonetmen)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Yonetmen)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Konu)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Konu)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResimURL)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResimURL)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Fragman)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Fragman)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Yabanci)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Yabanci)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.FilmID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

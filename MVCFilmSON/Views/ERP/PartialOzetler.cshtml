@@ -1,0 +1,26 @@
+﻿@model IEnumerable<MVCFilmSON.Models.Film>
+@{ 
+    Layout = null;
+}
+<article class="node">
+    <div class="news grid_8 alpha omega">
+        <h2 class="title_page">Son eklenenler</h2>
+
+        @foreach (var item in Model)
+        {
+            <div class="news_item">
+                <img class="wrap_me" width="90" height="90" src="/Content/filmresim/@item.ResimURL">
+                <a href="#" class="title">@item.FilmAdi</a>
+                <ul class="details">
+                    <li>@item.Yonetmen</li>
+                    <li>@item.Yil</li>
+                </ul>
+                <div class="details_text">
+                    @item.Konu
+                </div>
+            </div>
+        }
+    
+
+    </div>
+</article>

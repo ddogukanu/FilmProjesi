@@ -1,0 +1,32 @@
+﻿@model IEnumerable<MVCFilmSON.Models.Film>
+@{
+    Layout = null;
+}
+<div class="main_slider">
+    <div id="slider_nav" class="flexslider">
+        <ul class="slides">
+            @foreach (var item in Model)
+            {
+                <li>
+                    <h4>@item.FilmAdi</h4>
+                    <p>@item.Yonetmen <a href=#; class="main_slider_arrow"></a>
+                    </p>
+                </li>
+            }
+        
+  
+        </ul>
+    </div>
+
+    <div id="main_slider" class="wrap_me flexslider">
+        <ul class="slides">
+            @foreach (var item in Model)
+            {
+                <li>
+  <img src="/Content/filmresim/@item.ResimURL" width="634" height="380" />
+                </li>
+            }
+           
+        </ul>
+    </div>
+</div>

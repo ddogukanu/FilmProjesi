@@ -1,0 +1,327 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <title>@ViewBag.Title</title>
+    <link href='http://fonts.googleapis.com/css?family=PT+Sans' rel='stylesheet' />
+    <link href="/Content/css/common.css" rel="stylesheet" media="all" />
+    <link href="/Content/css/grid.css" rel="stylesheet" media="all" />
+    <link href="/Content/css/style.css" rel="stylesheet" media="all" />
+    <link href="/Content/css/style-responsive.css" rel="stylesheet" media="all" />
+    <link rel="icon" href="/Content/images/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/Content/images/favicon.ico" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/Content/images/57_57.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="/Content/images/72_72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="/Content/images/114_114.png" />
+    <link rel="apple-touch-icon" sizes="144x144" href="/Content/images/144_144.png" />
+    <script src="/Content/js/modernizr.js"></script>
+    <script src="/Content/js/script.js"></script>
+
+    @RenderSection("Scripts",false)
+</head>
+<body class="front">
+    <!-- header  -->
+    <header id="header" class="container_12">
+        <div class="grid_4">
+            <div id="logo">
+                <a href="/" title="Anasayfa"><img src="/Content/images/logo.png" alt="MovieScope" /></a>
+                <a href="/" title="Anasayfa" class="responsive-logo"><img src="/Content/images/logo-resp.png" alt="MovieScope" /></a>
+            </div>
+        </div>
+        <div class="grid_4 search-form">
+            <div id="block-search-form" class="block clearfix">
+                <form method="post" action="/ERP/Arama/">
+                    <div class="form-type-textfield">
+                        <input type="text" class="form-text" maxlength="128" size="15" placeholder="Aradığınız film" name="aranan"/>
+                    </div>
+                    <div class="form-actions">
+                        <input type="submit" class="form-submit" value="" />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="grid_4">
+            <div id="block_user" class="block clearfix">
+                <ul>
+                    @if (!Request.IsAuthenticated)
+                    {
+                        <li class="first">
+                            <a href="/Account/Register/">Kayıt Ol</a>
+                        </li>
+                        <li class="last">
+                            <a href="/Account/Login/">Giriş Yap</a>
+                        </li>
+                    }
+                    else
+                    {
+                        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                        {
+                            @Html.AntiForgeryToken()
+                        }
+
+                        <li>
+                            @Html.ActionLink("Merhaba " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Profilim" })
+                        </li>
+                        <li><a href="javascript:document.getElementById('logoutForm').submit()">Çıkış</a></li>
+
+
+                    }
+                </ul>
+            </div>
+        </div>
+    </header>
+    <!-- end header -->
+    <div id="main_menu" class="container_12">
+        <nav>
+            <!-- main menu in header -->
+            <ul id="superfish_menu" class="grid_12 sf-menu">
+                <li @Html.Raw(Request.Path=="ERP/" ? "class='active'":"")  >
+                    <a href="/">Anasayfa</a>
+                </li>
+                <li @Html.Raw(Request.Url.AbsolutePath.Contains("Yerli") ? "class='active'":"")>
+                    <a href="/ERP/Yerli">Yerli Filmler</a>
+                </li>
+                <li @Html.Raw(Request.Url.AbsolutePath.Contains("Yabanci") ? "class='active'":"")>
+                    <a href="/ERP/Yabanci">Yabancı Filmler</a>
+                </li>
+                <li @Html.Raw(Request.Url.AbsoluteUri.Contains("2016") ? "class='active'":"")>
+                    <a href="/ERP/Yil?y=2016">2016 Filmler</a>
+                </li>
+                <li @Html.Raw(Request.Url.AbsoluteUri.Contains("2015") ? "class='active'":"")>
+                    <a href="/ERP/Yil?y=2015">2015 Filmler</a>
+                </li>
+                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
+                {
+                    <li @Html.Raw(Request.Url.AbsolutePath.Contains("Yonet") ? "class='active'":"")> <a href="#">Yönet</a>
+                        <ul>
+                            <li>
+                                <a href="/KategoriYonet/">Kategori Panel</a>
+                            </li>
+                            <li>
+                                <a href="/FilmYonet/">Film Panel</a>
+                            </li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+            <div class="responsive-menu-items">
+
+            </div>
+            <!-- end main menu -->
+        </nav>
+    </div>
+    <div id="container" class="container_12 clearfix">
+        <!-- content -->
+        <div id="content" class="grid_8">
+            @RenderBody()
+        </div>
+        <!-- end content -->
+        <!-- right sidebar -->
+        <!--
+        <div id="sidebar" class="grid_4">
+            <aside id="block_trailers" class="block">
+                <h3 class="block_title"><span class="title">Featured Movie Trailers</span><a href="#" class="button_black button_small button_arrow">View all</a></h3>
+                <div class="content">
+                    <div class="video wrap_me_white">
+                        <div class="liquid-video-wrapper"></div>
+                    </div>
+                    <ul>
+                        <li class="vimeo">
+                            <a href="http://vimeo.com/40888186"></a>
+                        </li>
+                        <li class="vimeo">
+                            <a href="http://vimeo.com/7428907"></a>
+                        </li>
+                        <li class="vimeo">
+                            <a href="http://vimeo.com/6959789"></a>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            <aside id="block_showtimes" class="block block_grey">
+                <h3 class="block_title">Get Showtimes and Tickets</h3>
+                <div class="content">
+                    <form method="post" action="#">
+                        <div class="form-type-textfield">
+                            <label for="form_location">Browse by Location (ZIP Code or City, State)</label>
+                            <input id="form_location" name="form_location" type="text" class="form_location" maxlength="128" size="15" value="" />
+                            <input type="submit" class="form_submit" value="" />
+                        </div>
+                        <div class="form-type-select">
+                            <label for="form_titles">Browse by Title:</label>
+                            <select id="form_titles" name="form_titles" class="form_titles">
+                                <option value="0" selected="selected">Select movie title</option>
+                                <option value="1">House MD</option>
+                                <option value="2">Burlesque</option>
+                                <option value="3">Pirates Of The Caribbean 4</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+            </aside>
+            <aside id="block_advertise_1" class="block advertise wrap_me">
+                <div class="content">
+                    <p>
+                        Advertise Here
+                    </p>
+                </div>
+            </aside>
+            <aside id="block_facebook" class="block block_blue">
+                <h3 class="block_title">Like Us On Facebook</h3>
+                <div class="content">
+                    <div id="fb-root"></div>
+                    <script>
+                        (function (d, s, id) {
+                            var js, fjs = d.getElementsByTagName(s)[0];
+                            if (d.getElementById(id))
+                                return;
+                            js = d.createElement(s);
+                            js.id = id;
+                            js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=199804666731637";
+                            fjs.parentNode.insertBefore(js, fjs);
+                        }(document, 'script', 'facebook-jssdk'));
+                    </script>
+                    <div class="fb-like" data-send="false" data-show-faces="true" data-font="arial"></div>
+                </div>
+            </aside>
+            <aside id="block_photo_galleries" class="block">
+                <h3 class="block_title">Photo Galleries<a href="#" class="button_black button_small button_arrow">View all</a></h3>
+                <div class="content">
+                    <ul>
+                        <li>
+                            <article>
+                                <div class="photo">
+                                    <a href="#"><img src="/Content/images/content/photo_gallereis_1.jpg" alt="Photo" class="wrap_me_white" /></a>
+                                </div>
+                                <div class="details">
+                                    <h4 class="title"><a href="#">House MD</a></h4>
+                                    <p>
+                                        15 photos
+                                        <br />
+                                        Added: Oct 24, 2012
+                                    </p>
+                                </div>
+                            </article>
+                        </li>
+                        <li>
+                            <article>
+                                <div class="photo">
+                                    <a href="#"><img src="/Content/images/content/photo_gallereis_2.jpg" alt="Photo" class="wrap_me_white" /></a>
+                                </div>
+                                <div class="details">
+                                    <h4 class="title"><a href="#">Burlesque</a></h4>
+                                    <p>
+                                        7 photos
+                                        <br />
+                                        Added: Oct 24, 2012
+                                    </p>
+                                </div>
+                            </article>
+                        </li>
+                        <li>
+                            <article>
+                                <div class="photo">
+                                    <a href="#"><img src="/Content/images/content/photo_gallereis_3.jpg" alt="Photo" class="wrap_me_white" /></a>
+                                </div>
+                                <div class="details">
+                                    <h4 class="title"><a href="#">Cowboys &amp; Aliens</a></h4>
+                                    <p>
+                                        11 photos
+                                        <br />
+                                        Added: Oct 24, 2012
+                                    </p>
+                                </div>
+                            </article>
+                        </li>
+                        <li>
+                            <article>
+                                <div class="photo">
+                                    <a href="#"><img src="/Content/images/content/photo_gallereis_4.jpg" alt="Photo" class="wrap_me_white" /></a>
+                                </div>
+                                <div class="details">
+                                    <h4 class="title"><a href="#">Pirates Of The Caribbean 4</a></h4>
+                                    <p>
+                                        18 photos
+                                        <br />
+                                        Added: Oct 24, 2012
+                                    </p>
+                                </div>
+                            </article>
+                        </li>
+                    </ul>
+                </div>
+            </aside>
+            <aside id="block_advertise_2" class="block advertise wrap_me">
+                <div class="content">
+                    <p>
+                        Advertise Here
+                    </p>
+                </div>
+            </aside>
+        </div>
+        <!-- end right sidebar -->
+    </div>
+    <!-- footer -->
+    <footer id="footer" class="container_12">
+        <div class="grid_8">
+            <nav id="block_footer_menu" class="block clearfix">
+                <ul>
+                    <li class="active">
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="page_fullwidth.html">Pages</a>
+                    </li>
+                    <li>
+                        <a href="typography.html">Features</a>
+                    </li>
+                    <li>
+                        <a href="#">Trailers</a>
+                    </li>
+                    <li>
+                        <a href="#">Photos</a>
+                    </li>
+                    <li>
+                        <a href="#">BuddyPress</a>
+                    </li>
+                    <li>
+                        <a href="#">Blog</a>
+                    </li>
+                    <li>
+                        <a href="#">Contacts</a>
+                    </li>
+                </ul>
+            </nav>
+            <div id="block_copyright" class="block clearfix">
+                <p>
+                    &copy; 2013 MovieScope. All rights reserved.
+                </p>
+            </div>
+        </div>
+        <div class="grid_4">
+            <div id="block_social_footer" class="block clearfix">
+                <ul>
+                    <li>
+                        <a href="#" class="social_icons_24 gplus">Google Plus</a>
+                    </li>
+                    <li>
+                        <a href="#" class="social_icons_24 facebook">Facebook</a>
+                    </li>
+                    <li>
+                        <a href="#" class="social_icons_24 twitter">Twitter</a>
+                    </li>
+                    <li>
+                        <a href="#" class="social_icons_24 rss">RSS</a>
+                    </li>
+                    <li>
+                        <a href="#" class="social_icons_24 scroll_to_top" id="scroll_to_top">Scroll To Top</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <!-- end footer -->
+</body>
+</html>
